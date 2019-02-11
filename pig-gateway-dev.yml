@@ -1,61 +1,129 @@
-server:
-  port: 9999
-
-spring:
-  zipkin:
-    rabbitmq:
-      queue: zipkin
-  sleuth:
-    sampler:
-      percentage: 0.2
-
-zuul:
-  ribbon:
-    eager-load:
-      enabled: true
-      clients: pig-auth,pig-upms-service,pig-demo-service
-  ignoredServices: '*'
-  host:
-    connect-timeout-millis: 10000
-    socket-timeout-millis: 10000
-  ratelimit:
-    key-prefix: pig-ratelimite
+endpoints:
+  actuator:
     enabled: true
-    repository: REDIS
-    behind-proxy: true
-    policies:
-      pig-upms-service:
-        limit: 100
-        quota: 100
-        refresh-interval: 3
-
+  shutdown:
+    enabled: false
+feign:
+  client:
+    config:
+      feignName:
+        connectTimeout: 30000
+        readTimeout: 30000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  httpclient:
+    enabled: false
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+  threadpool:
+    default:
+      coreSize: 500
+      maxQueueSize: 1000
+      queueSizeRejectionThreshold: 800
+ignore:
+  clients:
+  - app
+  urls:
+  - /mobile/**
+  - /auth/**
+  - /admin/code/*
+  - /admin/smsCode/*
+  - /admin/user/info
+  - /admin/menu/userMenu
+  - /swagger-resources/**
+  - /swagger-ui.html
+  - /*/v2/api-docs
+  - /swagger/api-docs
+  - /webjars/**
+  - /mrs/website/**
+  - /portal/**
+jasypt:
+  encryptor:
+    password: lengleng
+management:
+  security:
+    enabled: false
+redis:
+  cache:
+    expiration: 3601
+ribbon:
+  ConnectTimeout: 10000
+  Httpclient:
+    enabled: false
+  OkHttp:
+    enabled: true
+  ReadTimeout: 10000
+  eager-load:
+    clients: pig-auth,pig-upms-service
+    enabled: true
 security:
   encode:
-    key: '1234567887654321' #必须16位
-  validate:
-    code: true
-    preview: false
-  sessions: stateless
+    key: '1234567887654321'
   oauth2:
     client:
       client-id: pig
       client-secret: pig
     resource:
       jwt:
-         key-uri: ${security.auth.server}/oauth/token_key #解析jwt令牌所需要密钥的地址
-
-ignore:
-  urls:
-    - /mobile/**
-    - /auth/**
-    - /admin/code/*
-    - /admin/smsCode/*
-    - /admin/user/info
-    - /admin/menu/userMenu
-    - /swagger-resources/**
-    - /swagger-ui.html
-    - /*/v2/api-docs
-    - /swagger/api-docs
-    - /webjars/**
-  clients:
-    - app
+        key-uri: ${security.auth.server}/oauth/token_key
+  sessions: stateless
+  validate:
+    code: true
+    preview: false
+server:
+  port: 9999
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 50
+spring:
+  http:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+  rabbitmq:
+    host: 127.0.0.1
+    password: guest
+    port: 5672
+    username: guest
+  redis:
+    host: 127.0.0.1
+    password: ''
+    port: 6379
+    remote: false
+  sleuth:
+    sampler:
+      percentage: 0.2
+  zipkin:
+    rabbitmq:
+      queue: zipkin
+zuul:
+  host:
+    connect-timeout-millis: 10000
+    socket-timeout-millis: 10000
+  ignoredServices: '*'
+  ratelimit:
+    behind-proxy: true
+    enabled: true
+    key-prefix: pig-ratelimite
+    policies:
+      pig-upms-service:
+        limit: 100
+        quota: 100
+        refresh-interval: 3
+    repository: REDIS
+  ribbon:
+    eager-load:
+      clients: pig-auth,pig-upms-service,pig-acs-service,pig-mrs-service
+      enabled: true

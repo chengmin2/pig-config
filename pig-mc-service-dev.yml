@@ -1,12 +1,82 @@
+endpoints:
+  actuator:
+    enabled: true
+  shutdown:
+    enabled: false
+feign:
+  client:
+    config:
+      feignName:
+        connectTimeout: 30000
+        readTimeout: 30000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  httpclient:
+    enabled: false
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+  threadpool:
+    default:
+      coreSize: 500
+      maxQueueSize: 1000
+      queueSizeRejectionThreshold: 800
+jasypt:
+  encryptor:
+    password: lengleng
+management:
+  security:
+    enabled: false
+redis:
+  cache:
+    expiration: 3601
+ribbon:
+  ConnectTimeout: 10000
+  Httpclient:
+    enabled: false
+  OkHttp:
+    enabled: true
+  ReadTimeout: 10000
+  eager-load:
+    clients: pig-auth,pig-upms-service
+    enabled: true
 server:
   port: 4050
-
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 50
 sms:
-  dingtalk:
-    webhook: https://oapi.dingtalk.com/robot/send?access_token=639c8b9cbe01b2d664e5bfd69c2514ad145fb68da6efd554691eeae7fcb317d8
   aliyun:
     accessKey: accessKey
-    secretKey: secretKey
     channels:
       loginCodeChannel: SMS_34630023
       serviceStatusChange: SMS_134310585
+    secretKey: secretKey
+  dingtalk:
+    webhook: https://oapi.dingtalk.com/robot/send?access_token=639c8b9cbe01b2d664e5bfd69c2514ad145fb68da6efd554691eeae7fcb317d8
+spring:
+  http:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+  rabbitmq:
+    host: 127.0.0.1
+    password: guest
+    port: 5672
+    username: guest
+  redis:
+    host: 127.0.0.1
+    password: ''
+    port: 6379
+    remote: false

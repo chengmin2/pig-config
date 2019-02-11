@@ -1,29 +1,90 @@
-server:
-  port: 5001
-
-spring:
-  # zipkin:
-  #     base-url: http://localhost:5002
-  # sleuth:
-  #   enabled: true
-  #   sampler:
-  #     percentage: 1
-  boot:
-    admin:
-      turbine:
-        location: pig-monitor
-      routes:
-        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,turbine.stream
-
-turbine:
-    app-config: pig-gateway #收集监控信息的服务名
-    combine-host-port: true
-    cluster-name-expression: new String('default') #集群名称
-
+endpoints:
+  actuator:
+    enabled: true
+  shutdown:
+    enabled: false
+feign:
+  client:
+    config:
+      feignName:
+        connectTimeout: 30000
+        readTimeout: 30000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  httpclient:
+    enabled: false
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+  threadpool:
+    default:
+      coreSize: 500
+      maxQueueSize: 1000
+      queueSizeRejectionThreshold: 800
+jasypt:
+  encryptor:
+    password: lengleng
+management:
+  security:
+    enabled: false
 notifier:
+  dingTalk:
+    enabled: true
   mobile:
     enabled: true
     mobiles:
-      - 17034642119
-  dingTalk:
+    - 17034642119
+redis:
+  cache:
+    expiration: 3601
+ribbon:
+  ConnectTimeout: 10000
+  Httpclient:
+    enabled: false
+  OkHttp:
     enabled: true
+  ReadTimeout: 10000
+  eager-load:
+    clients: pig-auth,pig-upms-service
+    enabled: true
+server:
+  port: 5001
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 50
+spring:
+  boot:
+    admin:
+      routes:
+        endpoints: env,metrics,trace,dump,jolokia,info,configprops,trace,logfile,refresh,flyway,liquibase,heapdump,loggers,auditevents,hystrix.stream,turbine.stream
+      turbine:
+        location: pig-monitor
+  http:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+  rabbitmq:
+    host: 127.0.0.1
+    password: guest
+    port: 5672
+    username: guest
+  redis:
+    host: 127.0.0.1
+    password: ''
+    port: 6379
+    remote: false
+turbine:
+  app-config: pig-gateway
+  cluster-name-expression: new String('default')
+  combine-host-port: true

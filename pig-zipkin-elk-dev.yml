@@ -1,19 +1,89 @@
+endpoints:
+  actuator:
+    enabled: true
+  shutdown:
+    enabled: false
+feign:
+  client:
+    config:
+      feignName:
+        connectTimeout: 30000
+        readTimeout: 30000
+  compression:
+    request:
+      enabled: true
+    response:
+      enabled: true
+  httpclient:
+    enabled: false
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+  threadpool:
+    default:
+      coreSize: 500
+      maxQueueSize: 1000
+      queueSizeRejectionThreshold: 800
+jasypt:
+  encryptor:
+    password: lengleng
+management:
+  security:
+    enabled: false
+redis:
+  cache:
+    expiration: 3601
+ribbon:
+  ConnectTimeout: 10000
+  Httpclient:
+    enabled: false
+  OkHttp:
+    enabled: true
+  ReadTimeout: 10000
+  eager-load:
+    clients: pig-auth,pig-upms-service
+    enabled: true
 server:
   port: 5002
-
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 50
+spring:
+  http:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+  rabbitmq:
+    host: 127.0.0.1
+    password: guest
+    port: 5672
+    username: guest
+  redis:
+    host: 127.0.0.1
+    password: ''
+    port: 6379
+    remote: false
 zipkin:
   collector:
     rabbitmq:
       addresses: 127.0.0.1:5682
-      password: lengleng
-      username: pig
+      password: root
       queue: zipkin
+      username: 123456
   storage:
-    type: elasticsearch
     elasticsearch:
-      hosts: 127.0.0.1:9200
       cluster: elasticsearch
+      hosts: 127.0.0.1:9200
       index: zipkin
-      max-requests: 64
-      index-shards: 5
       index-replicas: 1
+      index-shards: 5
+      max-requests: 64
+    type: elasticsearch

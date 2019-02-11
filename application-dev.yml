@@ -1,51 +1,9 @@
-#加密配置
-jasypt:
-  encryptor:
-    password: lengleng
-
-server:
-  tomcat:
-    max-threads: 500 # Maximum amount of worker threads.
-    min-spare-threads: 50 # Minimum amount of worker threads
-
-spring:
-  redis:
-    remote: false        #cachecloud 获取
-    host: 127.0.0.1
-    port: 6379
-    password:
-  rabbitmq:
-    host: 127.0.0.1
-    port: 5672
-    username: pig
-    password: lengleng
-  http:
-    multipart:
-      max-file-size: 1000MB
-      max-request-size: 1000MB
-
-redis:
-  cache:
-    expiration: 3601
-
-ribbon:
-  eager-load:
+endpoints:
+  actuator:
     enabled: true
-    clients: pig-auth,pig-upms-service
-  Httpclient:
+  shutdown:
     enabled: false
-  OkHttp:
-    enabled: true
-  ReadTimeout: 10000
-  ConnectTimeout: 10000
-
 feign:
-  hystrix:
-    enabled: true
-  okhttp:
-    enabled: true
-  httpclient:
-    enabled: false
   client:
     config:
       feignName:
@@ -56,27 +14,59 @@ feign:
       enabled: true
     response:
       enabled: true
-
+  httpclient:
+    enabled: false
+  hystrix:
+    enabled: true
+  okhttp:
+    enabled: true
 hystrix:
-  threadpool:
-    default:
-      coreSize: 500
-      maxQueueSize: 1000
-      queueSizeRejectionThreshold: 800
   command:
     default:
       execution:
         isolation:
           thread:
             timeoutInMilliseconds: 60000
-
-#监控短点配置
+  threadpool:
+    default:
+      coreSize: 500
+      maxQueueSize: 1000
+      queueSizeRejectionThreshold: 800
+jasypt:
+  encryptor:
+    password: lengleng
 management:
   security:
     enabled: false
-endpoints:
-  actuator:
-    enabled: true
-  shutdown:
+redis:
+  cache:
+    expiration: 3601
+ribbon:
+  ConnectTimeout: 10000
+  Httpclient:
     enabled: false
-
+  OkHttp:
+    enabled: true
+  ReadTimeout: 10000
+  eager-load:
+    clients: pig-auth,pig-upms-service
+    enabled: true
+server:
+  tomcat:
+    max-threads: 500
+    min-spare-threads: 50
+spring:
+  http:
+    multipart:
+      max-file-size: 1000MB
+      max-request-size: 1000MB
+  rabbitmq:
+    host: 127.0.0.1
+    password: guest
+    port: 5672
+    username: guest
+  redis:
+    host: 127.0.0.1
+    password: ''
+    port: 6379
+    remote: false

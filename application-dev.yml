@@ -70,3 +70,5 @@ spring:
     password: ''
     port: 6379
     remote: false
+   profiles:
+    active:dev
